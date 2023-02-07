@@ -3,6 +3,7 @@ package com.snf.soundpooltest;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 스캐너 소리 설정
      */
-    private SoundPool scanSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+//    private SoundPool scanSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+
+    private SoundPool scanSoundPool;
 
     /**
      * 스캐너 음
@@ -32,6 +35,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+        scanSoundPool = new SoundPool.Builder()
+                .setAudioAttributes(attributes)
+                .build();
 
         soundMap = new HashMap<>();
         soundMap.put(1, scanSoundPool.load(this, R.raw.scan_fail, 1));
